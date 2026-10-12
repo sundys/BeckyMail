@@ -81,7 +81,9 @@ jobs:
           set -euo pipefail
           TAG="${GITHUB_REF_NAME}"
           VERSION="${TAG#v}"
-          ZIP="Becky!InternetMail-${VERSION}-汉化版.zip"
+          # 附件名只能用 ASCII：GitHub 会丢弃发布包名里的非 ASCII 字符
+          # （"…-汉化版.zip" 会被改成 "…-.zip"），故用 zh-CN 标识汉化版。
+          ZIP="BeckyInternetMail-${VERSION}-zh-CN.zip"
           mkdir -p dist
 
           python - "$ZIP" <<'PY'
@@ -209,6 +211,19 @@ jobs:
           PY
 
       # ---------- 创建 Release ----------
+      # 同一个 tag 重新发布时先删掉旧 Release，避免上一次的附件残留
+      - name: 清理同名 Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+            echo "已存在 Release ${GITHUB_REF_NAME}，先删除"
+            gh release delete "${GITHUB_REF_NAME}" --yes
+          else
+            echo "无同名 Release，跳过"
+          fi
+
       - name: 创建 Release
         uses: softprops/action-gh-release@v2
         with:
