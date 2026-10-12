@@ -1,0 +1,73 @@
+:Base B2.hlp
+:Title Becky! Internet Mail ver.2
+:Index Becky! Internet Mail =B2.hlp
+1 Introduction=HIDH_HAJIMENI
+1 Main Window=main_index
+1 Becky! for Beginners
+2 About This Chapter=HIDH_INTRODUCTION
+2 Getting Started=HIDH_GETTINGSTARTED
+2 Receiving E-mail=HIDH_RECEIVE_MAIL
+2 Sending E-mail=HIDH_SEND_MAIL
+2 Reading E-mail=HIDH_READ_MAIL
+2 Replying E-mail=HIDH_REPLY_MAIL
+2 Using Address Book=HIDH_ADDRESSBOOK
+2 Organizing E-mail messages=HIDH_FILTERING
+1 Menu
+2 Main Window
+3 File menu=HIDH_MENU_FILE_MAIN
+3 Edit menu=HIDH_MENU_EDIT_MAIN
+3 View menu=HIDH_MENU_VIEW_MAIN
+3 Mail menu=HIDH_MENU_MAIL_MAIN
+3 Tool menu=HIDH_MENU_TOOL_MAIN
+2 Compose Window
+3 File menu=HIDH_MENU_FILE_COMP
+3 Edit menu=HIDH_MENU_EDIT_COMP
+3 View menu=HIDH_MENU_VIEW_COMP
+3 Tool menu=HIDH_MENU_TOOL_COMP
+2 Address Book
+3 File menu=HIDH_MENU_FILE_ADDR
+3 Edit menu=HIDH_MENU_EDIT_ADDR
+3 View menu=HIDH_MENU_VIEW_ADDR
+3 Tool menu=HIDH_MENU_TOOL_ADDR
+1 Settings
+2 Mailbox Setup
+3 Account=HIDD_PROMACCOUNT
+3 Connection=HIDD_PROMCONN
+3 Compose=HIDD_PROMCOMPOSE
+3 Receive=HIDD_PROMRECV
+3 Misc=HIDD_PROMMISC
+2 General Setup
+3 General=HIDD_PROPOPTION
+3 Tree/List=HIDD_PROPTREE
+3 Message View=HIDD_PROPVIEW
+3 Editor=HIDD_PROPEDITOR
+3 Citation=HIDD_PROPCOMPOSE
+3 Languages=HIDD_PROPFONT
+3 Shortcut Keys=HIDD_PROPKEY
+3 Keywords=HIDD_PROPKWD
+3 Send=HIDD_PROPSEND
+3 Receive=HIDD_PROPRECV
+3 MIME=HIDD_PROPMIME
+3 Advanced=HIDD_PROPADVANCED
+2 Folder Property
+3 General=HIDD_PROFGENERAL
+3 Compose=HIDD_PROFPERSON
+1 Advanced Features
+2 About this chapter=HIDH_ADVANCED
+2 Using Profiles=HIDH_PROFILES
+2 Using Templates=HIDH_TEMPLATES
+2 Using with IMAP servers=HIDH_IMAP
+2 Spelling checker=HIDH_SPELLCHECK
+2 Command line options=HIDH_COMMANDLINE
+2 HTML messages=HIDH_HTML
+2 Using Mailing Lists Manager=HIDH_MLIST_MANAGER
+2 Using Reminder=HIDH_REMINDER
+2 Multilanguage support=HIDH_MULTILINGUAL
+2 Flag, Priority, and Color Label=HIDH_PRIORITY
+2 Sync with Portable media=HIDH_TAKEOUT
+2 Tips=HIDH_TIPS
+1 Important
+2 About User Registration=HID_USERREGIST
+2 License Agreement=HIDH_AGREEMENT
+2 FAQ=HID_HELP_FAQ
+2 Copyright=HIDH_COPYRIGHT

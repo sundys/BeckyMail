@@ -1,0 +1,46 @@
+[Settings]
+AppTitle=B2
+Vender=RimArts
+UninstMessage=Uninstallation is done.\Remaining files will be deleted when you reboot your PC next time.\You have to delete mail folders by yourself, if not needed.
+Product=Becky! Ver.2
+Client=Mail
+SendTo=Becky!
+MAPI=B2MAPI.dll
+
+[Files]
+File0=B2.exe
+File1=B2.hlp
+File2=B2.cnt
+File3=B2default.bmp
+File4=B2.kwd
+File5=Readme.txt
+File6=License.txt
+FIle7=Register.exe
+FIle8=Register.hlp
+FIle9=B2MAPI.dll
+File10=B1toB2.exe
+File11=SSCEAM1.clx
+File12=SSCEBR1.clx
+File13=SSCE4132.dll
+File14=BkPGP.dll>PlugIns\BkPGP.dll
+File15=BkVoice.dll>PlugIns\BkVoice.dll
+File16=B2.exe.manifest
+File17=_b2icon_256.dll>PlugIns\_b2icon_256.dll
+File18=B2.chm
+File19=*.provider
+File20=BkWin8.dll
+File21=BkVista.dll
+File22=BkDAV.dll
+File23=tile*.png
+File24=OAuthGranted.fmt
+
+[Group]
+Item0=B2.exe>Becky! Ver.2
+Item1=Readme.txt>Read Me
+Item2=B2.chm>Becky! Help
+
+[Capabilities]
+Description=Internet mail client.
+FileAssociations=
+UrlAssociations=mailto
+ProgId=BeckyMail

@@ -1,0 +1,10 @@
+# 二进制文件：禁止换行符转换与文本差异处理，保证字节级一致
+*.exe   binary
+*.dll   binary
+*.chm   binary
+*.hlp   binary
+*.clx   binary
+*.bmp   binary
+*.png   binary
+*.kwd   binary
+*.fmt   binary

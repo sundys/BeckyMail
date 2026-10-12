@@ -1,0 +1,8 @@
+# 本地目录，不纳入版本库
+#   Backup/       原版文件备份（原始文件另存于 backup 分支）
+#   localization/ 汉化工作目录（翻译源文件、工具链、成品）
+/Backup/
+/localization/
+
+# 部署 / 回退时产生的临时文件
+*.bak

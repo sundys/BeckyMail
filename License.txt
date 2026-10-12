@@ -1,0 +1,88 @@
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+                          Becky! Internet Mail
+                            License Agreement
+                                                           RimArts, Inc.
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+Please read the following agreement before using this software. If you do 
+not agree to the terms of this agreement, do not use the software and 
+destroy all the copies of it.
+
+LICENSE AGREEMENT
+
+- About the unregistered software
+
+    The unregistered software may be freely tried out for a trial period
+    of up to 30 days. To continue to use it after this period, the user
+    must purchase a license. The unregistered software may be freely
+    copied and distributed so long as no modification is made in the
+    archive package.
+
+- The license for the registered software
+
+    One license is defined as follows:
+
+    - Per User
+        One license is granted to one 'user'. If a user has multiple
+        mail addresses or multiple personal computers, the user is
+        permitted to install and use multiple copies of this software
+        for his/her own use.
+
+    - Per Install
+        One license is granted to single personal computer nonsimultaneously
+        used by multiple people.
+
+    - Per Family
+        One license is granted to one family that shares a household and
+        income. However, if a member of the family want to use it
+        outside of the house, like at school or at work, he/she needs a
+        separated license.
+
+    Users can choose one of the above licensing policies.
+
+    Purchase of a license does not imply the purchase of the copyright
+    of this program.
+
+    A registered user can get a copy of the latest release of the 
+    program free of charge, although the new version has to be obtained
+    by the user from an Internet site or some other source. However, RimArts
+    are not obligated in any way to update the program.
+
+    Purchased licenses are not refundable.
+
+- Registration pass code
+
+    A registered user will obtain a pass code. The pass code is used to
+    make the shareware notice message box invisible, but the pass code
+    itself does not represent a License. A License is granted only when
+    a user has received a registration notice from RimArts, Inc., or
+    from a shareware payment-processing service with which RimArts, Inc.
+    has contracted. Only registered users may use the pass code for the
+    licensed copies of the software. 
+
+    USE OF THE PASSCODE WITHOUT A LICENSE IS A SERIOUS VIOLATION OF THE 
+    COPYRIGHT.
+
+
+LIMITED WARRANTY
+
+THIS PROGRAM AND ACCOMPANYING WRITTEN MATERIALS ARE PROVIDED "AS IS"
+WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING,
+BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS
+FOR A PARTICULAR PURPOSE.   NEITHER THE AUTHOR NOR ANYONE ELSE WHO HAS
+BEEN INVOLVED IN THE CREATION, PRODUCTION OR DELIVERY OF THIS PRODUCT
+SHALL BE LIABLE FOR ANY DIRECT, INDIRECT, CONSEQUENTIAL OR INCIDENTAL
+DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE SUCH PRODUCT EVEN IF
+THE AUTHOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+COPYRIGHT
+
+Becky! Internet Mail is owned and licensed exclusively by RimArts, Inc.
+Copyright (C) 1996-2014 RimArts Inc. All rights reserved.
+Reverse-engineering or modifying this software is strictly prohibited.
+
+--
+Tomohiro Norimatsu <carty@rimarts.co.jp>
+President, RimArts, Inc.
+
+

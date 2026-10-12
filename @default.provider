@@ -1,0 +1,40 @@
+# Your can create original provider templates using the following macros.
+# 
+# <address>  e-mail address (e.g. dummy@host.example.com)
+# <id>       account name. (e.g. dummy)
+# <fullhost> full host name. (e.g. host.example.com)
+# <domain>   domain. It should be the part of the file name. (e.g. example.com)
+# <host>     extra host name. could be empty. (e.g. host).
+# <host"default"> means if host is empty "default" string is used instead. 
+# The file name should be  "@example.com.provider" for the above example.
+
+# You can set "Protocol=0" in the imap4 section to force users to set up
+# POP3 account regardless the choice. (Many providers doesn't provide
+# IMAP server.
+# Each entry is equivalent to the one in Mailbox.ini, except that
+# it supports macros.
+
+[pop3]
+Protocol=0
+MailServer=pop.<fullhost>
+SMTPServer=smtp.<fullhost>
+SMTPAUTH=1
+SMTPPort=587
+POP3Port=110
+UserID=<id>
+
+[imap4]
+Protocol=1
+MailServer=imap.<fullhost>
+SMTPServer=smtp.<fullhost>
+SMTPAUTH=1
+SMTPPort=587
+IMAP4Port=143
+OnlineTrashName=Trash
+OnlineDraftName=Drafts
+OnlineSentName=Sent
+OnlineTrash=1
+OnlineDraft=1
+OnlineSent=1
+UserID=<id>
+
