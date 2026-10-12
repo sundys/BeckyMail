@@ -45,10 +45,12 @@ BeckyMail/                     仓库根目录 = 原版安装目录
 ├─ B2.chm                      帮助文件（当前为汉化版）
 ├─ Bk*.dll, B2MAPI.dll, ...    程序运行所需的配套组件（原版，未改动）
 ├─ @*.provider, B2.kwd, ...    配置模板、关键字文件等（原版，未改动）
+├─ .github/workflows/release.yml  打 tag 时自动打包发布（见第 5 节）
 │
 ├─ Backup/                     ← 原版文件备份（本地目录，不入库）
 ├─ localization/               ← 汉化工程目录（本地目录，不入库）
-└─ .gitignore
+├─ .gitignore
+└─ .gitattributes              禁用换行符转换，保证发布包与原始文件字节一致
 ```
 
 ### 两个本地目录说明
@@ -111,7 +113,26 @@ verify.cmd         :: 仅校验主程序结构完整性
 
 ---
 
-## 5. 已知限制
+## 5. 发布（GitHub Actions）
+
+仓库配置了 tag 触发的自动打包发布工作流 `.github/workflows/release.yml`：**只有推送 tag 时**才会打包发布，向 `main` 推送普通提交不会触发。
+
+```bash
+git tag v2.83.03
+git push origin v2.83.03
+```
+
+tag 形式为 `v2.83.03` 或 `2.83.03`，版本号取去掉前导 `v` 后的部分。工作流依次执行：
+
+1. **校验**——确认 `B2.exe` 含 zh-CN（`0x804`）资源集、`B2.chm` 含 `gb2312` 声明。若当前提交里放的是原版文件，则**中止发布**，避免误把原版当作汉化版发出去。
+2. **打包**——把程序目录打成 `Becky!InternetMail-<版本号>-汉化版.zip`（仓库自身的文件不进入发布包）。
+3. **发布**——创建 Release，名称为 `Becky! Internet Mail <版本号> 汉化版`，并自动生成发布摘要：文件校验值（大小 / MD5）、汉化方式、安装步骤、运行要求与已知限制、还原说明。
+
+> **工作流不重新构建汉化版。** 因为 `localization/`（翻译源文件与构建工具链）不入库，发布包是直接取 `main` 分支上**已构建好的成品文件**。所以打 tag 前请确认仓库根目录的 `B2.exe` / `B2.chm` 已是汉化版——第 1 步的校验会兜底拦截。
+
+---
+
+## 6. 已知限制
 
 1. **依赖系统 ANSI 代码页为 936**。程序大量使用 ANSI API（`CreateDialogIndirectParamA`、`LoadStringA` 等），中文需经 ACP 转换后显示。若在纯英文 Windows（ACP=1252）上运行会显示乱码——这与原版日文版在非日文 Windows 上的表现一致，属程序自身设计限制。
 2. **数字签名已移除**。修改 PE 会使原签名失效，构建时已清除签名目录，Windows 不再显示发布者为 RimArts。功能不受影响。
@@ -123,7 +144,7 @@ verify.cmd         :: 仅校验主程序结构完整性
 
 ---
 
-## 6. 版权
+## 7. 版权
 
 Becky! Internet Mail 版权归 **RimArts Inc.** 所有（`Copyright (c) 1996 RimArts, Inc.`）。本仓库仅用于个人学习与本地化研究，请勿用于商业分发；使用本软件请遵守随附的 `License.txt` 及官方网站的授权条款。
 
