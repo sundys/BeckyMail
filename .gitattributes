@@ -1,0 +1,8 @@
+# 备份分支：原版文件必须保持字节级一致，禁止换行符转换与文本差异处理
+*.exe   binary
+*.dll   binary
+*.chm   binary
+*.hlp   binary
+*.clx   binary
+*.bmp   binary
+*.png   binary
