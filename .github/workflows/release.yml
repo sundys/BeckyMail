@@ -16,6 +16,11 @@ jobs:
     name: 打包并发布汉化版
     runs-on: ubuntu-latest
 
+    # 发布包与文件名含中文，统一按 UTF-8 处理，避免受 runner 区域设置影响
+    env:
+      PYTHONUTF8: '1'
+      PYTHONIOENCODING: utf-8
+
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
@@ -84,22 +89,30 @@ jobs:
           import sys
           import zipfile
 
-          # 仓库自身的文件不进入发布包
-          EXCLUDE = {'.git', '.github', '.gitignore', '.gitattributes', 'README.md'}
+          # 仓库自身的文件与输出目录不进入发布包
+          EXCLUDE = {'.git', '.github', '.gitignore', '.gitattributes', 'README.md', 'dist'}
+
+          # 先取好文件清单再打包：否则打包过程中新增的 dist/*.zip 会被自己再次收进去
+          root = pathlib.Path('.')
+          files = []
+          for p in sorted(root.iterdir()):
+              if p.name in EXCLUDE:
+                  continue
+              if p.is_dir():
+                  files += [s for s in sorted(p.rglob('*')) if s.is_file()]
+              else:
+                  files.append(p)
 
           out = pathlib.Path('dist') / sys.argv[1]
           with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as z:
-              for p in sorted(pathlib.Path('.').iterdir()):
-                  if p.name in EXCLUDE:
-                      continue
-                  if p.is_dir():
-                      for sub in sorted(p.rglob('*')):
-                          if sub.is_file():
-                              z.write(sub, sub.as_posix())
-                  else:
-                      z.write(p, p.name)
-          print('已生成 %s（%d 字节，%d 个条目）'
-                % (out, out.stat().st_size, len(zipfile.ZipFile(out).namelist())))
+              for f in files:
+                  z.write(f, f.as_posix())
+
+          with zipfile.ZipFile(out) as z:
+              count = len(z.namelist())
+          print('已生成 %s（%d 字节，%d 个条目）' % (out, out.stat().st_size, count))
+          for f in files:
+              print('   + %s' % f.as_posix())
           PY
 
           {
