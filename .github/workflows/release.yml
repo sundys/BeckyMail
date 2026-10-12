@@ -1,0 +1,208 @@
+name: 打包发布汉化版
+
+# 仅在推送 tag 时触发（推荐 tag 形式：v2.83.03）
+on:
+  push:
+    tags:
+      - 'v*'
+      - '[0-9]*'
+
+# 创建 Release 需要写权限
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: 打包并发布汉化版
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 准备 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 安装依赖
+        run: python -m pip install --disable-pip-version-check pefile
+
+      # ---------- 发布闸门 ----------
+      # 仓库里的 localization/ 未入库，发布包是直接取 main 分支上的成品文件，
+      # 因此必须先确认 B2.exe / B2.chm 确实是汉化版而不是原版。
+      - name: 校验确为汉化版
+        run: |
+          python - <<'PY'
+          import sys
+          import pefile
+
+          REQUIRED = {0x0409: '英文', 0x0411: '日文', 0x0804: '简体中文'}
+
+
+          def resource_langs(path):
+              pe = pefile.PE(path, fast_load=True)
+              pe.parse_data_directories(
+                  directories=[pefile.DIRECTORY_ENTRY['IMAGE_DIRECTORY_ENTRY_RESOURCE']])
+              langs = set()
+              for rtype in pe.DIRECTORY_ENTRY_RESOURCE.entries:
+                  for rid in rtype.directory.entries:
+                      for rlang in rid.directory.entries:
+                          langs.add(rlang.id)
+              pe.close()
+              return langs
+
+
+          langs = resource_langs('B2.exe')
+          print('B2.exe 资源语言集: ' + ', '.join('0x%04x' % l for l in sorted(langs)))
+
+          missing = [l for l in REQUIRED if l not in langs]
+          if missing:
+              sys.exit('错误: B2.exe 缺少资源语言集 ' +
+                       ', '.join('0x%04x (%s)' % (l, REQUIRED[l]) for l in missing) +
+                       '，当前提交里的 B2.exe 不是汉化版，已中止发布。')
+
+          if b'gb2312' not in open('B2.chm', 'rb').read():
+              sys.exit('错误: B2.chm 中找不到 gb2312 字符集声明，'
+                       '当前提交里的 B2.chm 不是汉化版，已中止发布。')
+          print('B2.chm 已确认为汉化版（含 gb2312 字符集声明）')
+
+          print('校验通过：打包内容确为简体中文汉化版')
+          PY
+
+      # ---------- 打包 ----------
+      - name: 打包
+        run: |
+          set -euo pipefail
+          TAG="${GITHUB_REF_NAME}"
+          VERSION="${TAG#v}"
+          ZIP="Becky!InternetMail-${VERSION}-汉化版.zip"
+          mkdir -p dist
+
+          python - "$ZIP" <<'PY'
+          import pathlib
+          import sys
+          import zipfile
+
+          # 仓库自身的文件不进入发布包
+          EXCLUDE = {'.git', '.github', '.gitignore', '.gitattributes', 'README.md'}
+
+          out = pathlib.Path('dist') / sys.argv[1]
+          with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as z:
+              for p in sorted(pathlib.Path('.').iterdir()):
+                  if p.name in EXCLUDE:
+                      continue
+                  if p.is_dir():
+                      for sub in sorted(p.rglob('*')):
+                          if sub.is_file():
+                              z.write(sub, sub.as_posix())
+                  else:
+                      z.write(p, p.name)
+          print('已生成 %s（%d 字节，%d 个条目）'
+                % (out, out.stat().st_size, len(zipfile.ZipFile(out).namelist())))
+          PY
+
+          {
+            echo "TAG=${TAG}"
+            echo "VERSION=${VERSION}"
+            echo "ZIP=${ZIP}"
+            echo "RELEASE_NAME=Becky! Internet Mail ${VERSION} 汉化版"
+            echo "SIZE_EXE=$(stat -c%s B2.exe)"
+            echo "MD5_EXE=$(md5sum B2.exe | cut -d' ' -f1)"
+            echo "SIZE_CHM=$(stat -c%s B2.chm)"
+            echo "MD5_CHM=$(md5sum B2.chm | cut -d' ' -f1)"
+            echo "SIZE_ZIP=$(stat -c%s "dist/${ZIP}")"
+            echo "MD5_ZIP=$(md5sum "dist/${ZIP}" | cut -d' ' -f1)"
+            echo "DATE=$(date -u '+%Y-%m-%d %H:%M UTC')"
+          } >> "$GITHUB_ENV"
+
+      # ---------- 发布摘要 ----------
+      - name: 生成发布摘要
+        run: |
+          set -euo pipefail
+          cat > release-body.md <<'EOF'
+          ## Becky! Internet Mail {{VERSION}} 简体中文汉化版
+
+          > 基于官方原版 **{{VERSION}}** 制作（主程序文件版本号 `2.8.3.3`）
+          > 官方主页：<https://www.rimarts.co.jp/becky.htm>
+
+          ### 📦 本次发布内容
+
+          | 文件 | 大小（字节） | MD5 |
+          |---|---|---|
+          | `B2.exe` | {{SIZE_EXE}} | `{{MD5_EXE}}` |
+          | `B2.chm` | {{SIZE_CHM}} | `{{MD5_CHM}}` |
+          | `{{ZIP}}` | {{SIZE_ZIP}} | `{{MD5_ZIP}}` |
+
+          发布包内为完整的程序目录：汉化后的主程序与帮助文件，以及程序运行所需的配套组件（`Bk*.dll`、`B2MAPI.dll`、图标等，均为官方原版、未做修改）。
+
+          ### 🔤 汉化方式
+
+          原版 `B2.exe` 本身就内置了**英文（`0x409`）与日文（`0x411`）两套完整资源**，由 Windows 按系统 UI 语言自动选择。
+
+          本次汉化的做法是：在 PE 资源中**新增一整套 zh-CN（`0x804`）简体中文资源集**，英文与日文资源**一字未改**。
+
+          - **无需修改任何程序代码**，不改变程序行为；
+          - 系统 UI 语言为简体中文 → 显示中文；为日文 → 显示日文；其他语言 → 显示英文。
+
+          汉化覆盖：菜单 42 个 / 592 条，对话框 139 个 / 1488 条，字符串表 94 块 / 962 条，下拉框条目 26 个 / 172 条，版本信息 2 条，另有 52 处 `.rdata` 硬编码字符串按原位等长改写；帮助文件 90 个页面 / 81 条目录条目。构建时会自动加宽被中文撑破的对话框控件，并逐对话框与原版比对，确认未引入新的控件重叠。
+
+          ### 🚀 安装
+
+          1. **退出 Becky!**（程序为单实例运行）；
+          2. 备份安装目录下的原文件：`B2.exe` → `B2.exe.bak`，`B2.chm` → `B2.chm.bak`；
+          3. 用本包中的 `B2.exe`、`B2.chm` 覆盖同名文件即可；也可以直接用整个发布包替换程序目录。
+
+          汉化版与原版**共用同一份邮件数据**，不会改动或损坏邮件、通讯簿等数据。如需还原，把 `.bak` 改回原名即可。
+
+          ### ⚠️ 运行要求与已知限制
+
+          - **系统 ANSI 代码页须为 936（GBK）**。程序大量使用 ANSI API，中文需经 ACP 转换后显示；在纯英文 Windows（ACP=1252）上会显示乱码。这与原版日文版在非日文 Windows 上的表现一致，属程序自身的设计限制。
+          - **数字签名已移除**。修改 PE 会使原签名失效，Windows 不再显示发布者为 RimArts；程序功能不受影响。
+          - 帮助文件的**「索引」与「搜索」选项卡关键词仍为英文**（索引读取的是编译后的 B 树，替换关键词会破坏二分查找导致索引失效）；**目录与正文均已汉化**。
+          - **邮件头字段名保持英文**（`From` / `To` / `Cc` / `Subject` / `Message-Id` / `Resent-*` 等）。这些字符串同时作为排序/过滤规则的存储值，翻译会破坏既有规则；原厂日文版同样保持英文。
+          - `B2.hlp` / `B2.cnt`、`Readme.txt`、`License.txt` 未汉化。
+          - 极少数极窄的对话框标签仍可能被截断。
+
+          ### ↩️ 还原为原版
+
+          未经任何修改的官方原版文件归档在 **`backup` 分支**（与主分支无共同历史）：
+
+          <https://github.com/{{GITHUB_REPOSITORY}}/tree/backup>
+
+          ### ⚖️ 版权
+
+          Becky! Internet Mail 版权归 **RimArts Inc.** 所有（`Copyright (c) 1996 RimArts, Inc.`）。本汉化版仅供个人学习与本地化研究使用，请勿用于商业分发；使用本软件请遵守随附 `License.txt` 及官方网站的授权条款。
+
+          ---
+
+          <sub>本发布包由 GitHub Actions 于 {{DATE}} 从标签 `{{TAG}}` 自动打包生成。</sub>
+          EOF
+
+          python - <<'PY'
+          import os
+          import pathlib
+
+          KEYS = ['RELEASE_NAME', 'VERSION', 'TAG', 'ZIP', 'GITHUB_REPOSITORY',
+                  'SIZE_EXE', 'MD5_EXE', 'SIZE_CHM', 'MD5_CHM', 'SIZE_ZIP', 'MD5_ZIP',
+                  'DATE']
+
+          path = pathlib.Path('release-body.md')
+          body = path.read_text(encoding='utf-8')
+          for key in KEYS:
+              body = body.replace('{{%s}}' % key, os.environ.get(key, ''))
+          path.write_text(body, encoding='utf-8')
+          print(body)
+          PY
+
+      # ---------- 创建 Release ----------
+      - name: 创建 Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ env.RELEASE_NAME }}
+          tag_name: ${{ github.ref_name }}
+          body_path: release-body.md
+          files: dist/*.zip
+          fail_on_unmatched_files: true
+          draft: false
+          prerelease: false
