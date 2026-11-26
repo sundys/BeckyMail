@@ -9,6 +9,65 @@ If you need to use Becky! on older Windows, use ver.2.75.04.
 *****************************************************************************
 Update History (date format: YYYY/MM/DD)
 
+Ver.2.85.00 (2026/11/25)
+- Bundled the full-text search plug-in "B2SearchZ" ("Tools" > "Full-text Search..."). See B2SearchZ.txt in the "PlugIns" folder for details.
+- The spell checker now uses the spell checking feature of Windows.
+- You can now choose the spell check languages in General Setup > Editor > "Language...". Multiple languages can be selected.
+  (You can choose the languages whose language packs are installed in Windows. The dictionaries of Windows are used. Words added with "Add" are saved in BkSpell.txt in the data folder.)
+- Spell check now checks the message body when composing HTML messages.
+- The icons of the plug-in "_b2icon_256.dll" are now built into Becky! (it does no harm if it remains in the "PlugIns" folder).
+- Fixed a bug that the receive buttons may stay disabled when the OAuth2 token cannot be obtained.
+- A few bug fixes.
+
+Ver.2.84.01 (2026/11/20)
+- Fixed a bug that ver.2.84.00 terminates at startup when Microsoft Edge WebView2 Runtime is old.
+- Improved: Becky! no longer freezes for a while when software using UI Automation (screen readers, AI computer-use tools, etc.) reads the message list.
+- Fixed a bug that screen readers may not read the subject or sender in the message list correctly.
+- Added an option to show text messages as HTML in General Setup > Advanced (for reading the message body with a screen reader).
+- You can now move between the message list and the message body with Tab / Shift+Tab.
+- Fixed a bug that the progress bar on the status bar may remain after loading a large message via IMAP.
+- Renamed the HTML rendering engine options to "Edge (WebView2)" and "IE (Trident)".
+- A few bug fixes.
+
+Ver.2.84.00 (2026/11/19)
+- Added an option to choose the display language (Japanese / English) in General Setup > Advanced.
+- OAuth2: You can now choose the Microsoft account type (personal / work or school).
+- OAuth2: The sign-in page now preselects the configured account.
+- Improved typing response when composing HTML messages.
+- Fixed a bug that the folder information or the IMAP quota usage may not be shown correctly on the status bar.
+- HTML messages can now be printed with the "Print" command (the headers set to be printed are printed at the top).
+- A few bug fixes.
+
+Ver.2.83.11 (2026/11/06)
+- A few bug fixes.
+
+Ver.2.83.08 (2026/11/04)
+- Fixed a bug that Becky! freezes on Empty Trash on IMAP account with IMAP IDLE is on.
+
+Ver.2.83.07 (2026/11/03)
+- A few bug fixes.
+
+Ver.2.83.06 (2026/10/30)
+- Removed "CRAM-MD5" from the SMTP authentication options.
+- The "TLS" choices in Mailbox Setup > Advanced are now "Default" and "TLS1.2" only.
+  (On Windows 11, "Default" selects TLS 1.3. TLS 1.1 and earlier can no longer be used.)
+- Removed "file:" from the clickable URL schemes.
+- Disabled the developer tools of the embedded browser (WebView2).
+- Strengthened the behavior of warnings when composing mail.
+- Changed several default values. Settings already saved by existing users are not changed.
+- Changed some wording on the settings screens.
+- Other internal security improvements.
+
+Ver.2.83.05 (2026/10/26)
+- OAuth2 tokens will be encrypted when storing.
+- Added "ReAuth" and "Revoke" button for OAuth2 in "Mailbox Setup".
+- APOP, CRAM-MD5, and NTLM have been deleted from "Mailbox Setup","Account".
+
+Ver.2.83.04 (2026/10/22)
+- Fixed minor issues with OAuth2 authentication.
+- Fixed a few bugs.
+- Some UI adjustments.
+
 Ver.2.83.03 (2026/7/4)
 - Fixed the problem with large UTF-8 text on Compose window.
 - Fixed the problem with attachment files with illegal multipart boundaries.
@@ -181,7 +240,7 @@ Ver.2.67 -> 2.68 (2014/7/7)
   When the users connects to the POP3 server that has been taken control
   of by an attacker, the attacker can use certain POP3 response to
   execute a code on the user's computer.
-
+  (JVN#35376006)(CVE-2014-3891)
 
 Ver.2.66 -> 2.67 (2014/6/17)
 - When "Touch Friendly Mode" is checked and the screen is in the portrait
@@ -765,7 +824,7 @@ Ver.2.51.02 -> Ver.2.51.03 (2009/7/23)
 
 
 Ver.2.51.01 -> Ver.2.51.02 (2009/7/22)
-[BUGFIX: Fixed a few more UTF-8 glitches.
+ [BUGFIX: Fixed a few more UTF-8 glitches.
 
 
 Ver.2.51 -> Ver.2.51.01 (2009/7/21)
@@ -876,6 +935,11 @@ Ver.2.50 -> Ver.2.50.01 (2009/02/16)
 
 
 Ver.2.48.02 -> Ver.2.50 (2009/02/11)
+- FIXED THE BUFFER OVERFLOW VULNERABILITY. If a received message contains
+  illegal code with return receipt request, it may cause a buffer
+  overflow problem when the user agrees to return the receipt message.
+  (JVN#29641290)(CVE-2009-0569)
+
 - "Agents" feature is added. You can assign virtual agent to the message
   and let him/her watch the task like "Need Reply", "Watch for Reply",
   etc.
@@ -909,10 +973,6 @@ Ver.2.48.02 -> Ver.2.50 (2009/02/11)
   re-using a message which has older X-Mailer header.
 - BUGFIX: When duplicate messages were deleted on the threaded folder,
   child items of the deleted messages had become invisible.
-
-- FIXED THE BUFFER OVERFLOW VULNERABILITY. If a received message contains
-  illegal code with return receipt request, it may cause a buffer
-  overflow problem when the user agrees to return the receipt message.
 
 
 Ver.2.48.01 -> Ver.2.48.02 (2008/10/27)
@@ -986,7 +1046,7 @@ Ver.2.46 -> Ver.2.47 (2008/05/20)
   All" -> "Extract Attached Messages" did not work.
 
 - Version string will be saved in the registry from this version.
-  iHKEY_CURRENT_USER\Software\RimArts\B2\Setting -> VersionString)
+   iHKEY_CURRENT_USER\Software\RimArts\B2\Setting -> VersionString)
 
 
 Ver.2.45.02 -> Ver.2.46 (2008/04/08)

@@ -1,0 +1,229 @@
+======================================================================
+  Becky! Full-text Search (B2SearchZ.dll) Ver.1.0
+  Plug-in for Becky! Internet Mail
+  Copyright (C) 2026 RimArts, Inc.
+======================================================================
+
+* Overview
+
+This plug-in builds an index of the messages in the mailboxes and folders
+you choose, and searches the subject, sender, recipients and body of the
+messages. Because it uses an index, searches are fast even with hundreds
+of thousands of messages.
+
+  - Three search modes: "All words (AND)", "Any word (OR)" and
+    "Person's name".
+  - Results are listed newest first. Selecting a result shows the
+    message text with the matched words highlighted.
+  - You can open the message in Becky! with the first matched word
+    selected.
+  - The index is built and updated in the background, so you can keep
+    using Becky! in the meantime.
+  - Searches ignore the differences between upper and lower case, and
+    between full-width and half-width letters, digits and katakana.
+
+
+* Requirements
+
+  - Windows 10 or later
+  - Becky! Internet Mail Ver.2 (tested with 2.84)
+
+
+* Installation
+
+  1. Exit Becky!.
+  2. Copy B2SearchZ.dll to the "PlugIns" folder in the Becky! program
+     folder (the folder that contains B2.exe).
+  3. Start Becky!. If you are asked whether to enable the plug-in,
+     enable it.
+
+"Full-text Search..." and "Update Full-text Search Index" are added to the
+"Tools" menu.
+
+
+* How to use
+
+1. Building the first index
+
+  Choose "Tools" > "Full-text Search...". Because there is no index yet,
+  the settings dialog appears first. Check the mailboxes and folders to
+  index and click "OK". Click "OK" in the confirmation to start building
+  the index.
+
+  The index is built in the background, so you can keep using Becky!.
+  With many messages, it can take a while. The progress is shown at the
+  bottom of the search window. Click "Stop Updating" to stop.
+
+  If you exit Becky! while the index is being built, it continues from
+  where it stopped shortly after Becky! starts next time.
+
+2. Searching
+
+  Type words in "Find" and click "Search" (or press Enter). Separate
+  words with spaces. Choose one of the search modes:
+
+  - All words (AND)
+      Finds messages that contain all the words.
+  - Any word (OR)
+      Finds messages that contain at least one of the words.
+  - Person's name
+      Finds messages where the words appear next to each other, in any
+      order. Only symbols, spaces, tabs and line breaks may come between
+      the words. Titles before or after the name are fine.
+      Example: "Smith John" matches "John Smith", "Smith, John" and
+      "Mr. John Smith", but not "John and Mr. Smith".
+      A name typed as one word, such as a Japanese name without a space,
+      also matches the same name with symbols or spaces at one place
+      inside it, in the same order (the order is not swapped).
+
+  The subject, sender, To, Cc and body are searched. For HTML messages,
+  the text without the tags is searched.
+
+3. Narrowing down the results
+
+  - Fields
+      Put "subject:", "from:", "to:" or "body:" before a word to search
+      that word only in that field ("to:" and "cc:" both mean To and Cc).
+      Words without a prefix are searched in all fields as before.
+      Example: "invoice subject:meeting from:smith"
+          finds messages with "meeting" in the subject, "smith" in the
+          sender and "invoice" anywhere (in the "All words" mode).
+      A space after the colon is fine ("subject: meeting").
+      Click the "Field" button next to "Find" (Alt+E) and choose from the
+      menu to insert "subject:" etc. at the cursor. If a word is selected,
+      the prefix is put before it.
+      In the "Person's name" mode, the first prefix applies to the whole
+      name (e.g. "from:john smith").
+  - Dates
+      Choose "Today", "Past week", "Past month", "Past 3 months",
+      "Past 6 months" or "Past year". "Custom range" shows two date
+      boxes for the first and last day (the last day is included). Clear
+      the check box of a date to leave that side open. The date is the
+      date of the message shown in the "Date" column.
+  - Look in
+      "Selected mailbox" and "Selected folder" search only the mailbox
+      or folder (including the folders under it) that is selected in
+      Becky! when you search. If it is not indexed (an IMAP folder, for
+      example), a message tells you so.
+
+  When the results are narrowed down by dates or location, "(filtered by
+  date or location)" is shown after the number of results. Dates and Look
+  in are reset to all each time the search window is opened. Changing them
+  after a search searches again right away.
+
+4. Viewing the results
+
+  Results are listed newest first. Selecting a result shows the message
+  text at the bottom of the window with the matched words highlighted
+  (Becky!'s own window does not change).
+
+  Double-click a result, or press Enter, or click "View Message" to open
+  the message in Becky!. When the message is shown as text, the first
+  matched word is selected.
+
+  The column widths (as proportions of the list width), and the position
+  and size of the window are remembered.
+
+5. Search history
+
+  Up to 20 searched words are remembered and can be chosen from the
+  "Find" list. Open the list, select an entry and press Delete to remove
+  it. "Clear Search History" in the settings dialog removes all of them.
+
+
+* Updating the index
+
+The index is updated at the following times. Only the folders that have
+changed are read. Messages that were deleted or moved are removed from the
+index.
+
+  - At the interval you set (60 minutes by default)
+  - When mail is received
+  - When Becky! starts (30 seconds after starting)
+  - When you choose "Tools" > "Update Full-text Search Index", or click
+    "Update Index" in the search window
+
+Messages that arrived or were moved since the last update may not appear
+in the results until the index is updated. If "The message was not found"
+is shown, update the index.
+
+
+* Settings
+
+Open the settings with "Settings..." in the search window, or from the
+plug-in settings of Becky!.
+
+  - All mailboxes and folders
+      When checked, everything is indexed (including folders created
+      later). Otherwise only the mailboxes and folders checked in the
+      list are indexed. Checking a mailbox includes all the folders in
+      it.
+  - Update every ... minutes (0: never)
+  - Update when mail is received
+  - Update when Becky! starts
+  - Maximum results (5000 by default)
+  - Rebuild Index
+      Deletes the whole index and builds it again. Use it when the
+      results look wrong.
+  - Clear Search History
+
+When you change the targets and click "OK", the index is updated. Messages
+in folders that are no longer targets are removed from the index.
+
+
+* What is not indexed
+
+  - IMAP folders (for an IMAP mailbox, only its local folders are
+    indexed)
+  - Tasks, Outbox, Drafts, Reminders and Trash (the folders under the
+    Outbox, such as Sent, are indexed)
+  - Query results
+  - Attachments
+  - Scripts and styles in HTML
+  - Body text after the first 200,000 characters
+
+
+* Notes and limitations
+
+  - The matched word is selected with Becky!'s "Find in text" feature.
+    This changes the last search text and options of that feature in
+    Becky!.
+  - The matched word cannot be selected while an HTML message is shown
+    as HTML.
+  - Depending on the character set of the message, the matched word may
+    not be selected.
+  - This plug-in reads Becky!'s message files directly. If a future
+    version of Becky! changes the file format, it may stop working
+    correctly.
+  - If the target folders contain no messages, the settings dialog
+    appears every time you open the search window.
+
+
+* Files
+
+The index and settings are stored in the "PlugIns\B2SearchZ" folder in the
+Becky! data folder.
+
+  B2SearchZ.ini    Settings, window position and column widths
+  History.txt      Search history
+  index.db         The index (index.db-wal and index.db-shm may also be
+                   created)
+
+The index may become about as large as the message files (a rough guide).
+Make sure there is enough free disk space.
+
+
+* Uninstallation
+
+  1. Exit Becky!.
+  2. Delete B2SearchZ.dll from the "PlugIns" folder of Becky!.
+  3. If you don't need the index, delete the "PlugIns\B2SearchZ" folder
+     in the data folder.
+
+This plug-in does not use the registry.
+
+
+* History
+
+Ver.1.0 (2026/11/25)
+  - First release.
