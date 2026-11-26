@@ -10,32 +10,37 @@
 | 官方网站 | <https://www.rimarts.co.jp/becky.htm> |
 | 开发商 | RimArts Inc.（日本） |
 | 归档内容 | 官方发行的原始 `B2.exe`（主程序）与 `B2.chm`（帮助文件） |
-| 当前归档版本 | **2.83.03** |
+| 当前归档版本 | **2.85.00**（另含历史版本 2.83.03） |
 
 ---
 
 ## 1. 分支内容
 
 ```
-2.83.03/
+2.85.00/
 ├─ B2.exe     原版主程序（未做任何修改）
 └─ B2.chm     原版帮助文件（未做任何修改）
+2.83.03/
+├─ B2.exe
+└─ B2.chm
 ```
 
-各版本以**版本号目录**归档，新增版本时新建对应目录（如 `2.83.04/`），既有目录**不得改动**。
+各版本以**版本号目录**归档，新增版本时新建对应目录（如 `2.85.00/`），既有目录**不得改动**。
 
 ## 2. 文件校验值
 
 | 版本 | 文件 | 大小 (字节) | MD5 |
 |---|---|---|---|
+| 2.85.00 | `2.85.00/B2.exe` | 11,209,480 | `a6e09a6f1eaaec82f8f96a7e505d55c1` |
+| 2.85.00 | `2.85.00/B2.chm` | 147,105 | `459ed3961031d7d663b4b41707269f39` |
 | 2.83.03 | `2.83.03/B2.exe` | 8,652,040 | `b89be608cb2896c84bfd2150d71b73e8` |
 | 2.83.03 | `2.83.03/B2.chm` | 144,067 | `5ccdfbe84cd294493a3d200544146219` |
 
-文件版本信息（`2.83.03/B2.exe`）：
+文件版本信息（`2.85.00/B2.exe`）：
 
 ```
-FileVersion      : 2.8.3.3
-ProductVersion   : 2.8.3.3
+FileVersion      : 2.85.0.0
+ProductVersion   : 2.85.0.0
 FileDescription  : Becky! Internet Mail version 2
 ProductName      : Becky! Internet Mail
 CompanyName      : RimArts Inc.
@@ -43,9 +48,12 @@ LegalCopyright   : Copyright (c) 1996 RimArts, Inc.
 OriginalFilename : B2.EXE
 ```
 
+2.83.03 的版本信息为 `2.8.3.3`。
+
 校验命令：
 
 ```bash
+md5sum 2.85.00/B2.exe 2.85.00/B2.chm
 md5sum 2.83.03/B2.exe 2.83.03/B2.chm
 ```
 
